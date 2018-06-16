@@ -1,26 +1,3 @@
-#!/usr/bin/env python
-# -*- coding: utf8 -*-
-#
-#    Copyright 2014,2018 Mario Gomez <mario.gomez@teubi.co>
-#
-#    This file is part of MFRC522-Python
-#    MFRC522-Python is a simple Python implementation for
-#    the MFRC522 NFC Card Reader for the Raspberry Pi.
-#
-#    MFRC522-Python is free software: you can redistribute it and/or modify
-#    it under the terms of the GNU Lesser General Public License as published by
-#    the Free Software Foundation, either version 3 of the License, or
-#    (at your option) any later version.
-#
-#    MFRC522-Python is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-#    GNU Lesser General Public License for more details.
-#
-#    You should have received a copy of the GNU Lesser General Public License
-#    along with MFRC522-Python.  If not, see <http://www.gnu.org/licenses/>.
-#
-
 import RPi.GPIO as GPIO
 import MFRC522
 import signal
@@ -33,6 +10,17 @@ def end_read(signal,frame):
     print "Ctrl+C captured, ending read."
     continue_reading = False
     GPIO.cleanup()
+    
+def save(uid):
+    try:
+        r = requests.post('http://128.199.82.144:1506/absensi/tap', json={"uid": uid})
+        if (r.status_code == 200):
+            print "SUCCESS"
+        else:
+            print "FAILED"
+        print r.json()["message"]
+    except requests.exceptions.RequestException as e:
+        print e
 
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
@@ -60,8 +48,10 @@ while continue_reading:
     # If we have the UID, continue
     if status == MIFAREReader.MI_OK:
 
+        strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1))
         # Print UID
-        print "Card read UID: " + ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
+        print "Card read UID: " + strUid)
+        save(strUid)
     
         # This is the default key for authentication
         key = [0xFF,0xFF,0xFF,0xFF,0xFF,0xFF]
