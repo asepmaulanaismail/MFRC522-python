@@ -7,24 +7,24 @@ import RPi.GPIO as GPIO
 import time
 
 continue_reading = True
-LedPin = 7
+BeepPin = 7
 RIGHT=1
 WRONG=0
 
 def setup():
   GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
-  GPIO.setup(LedPin, GPIO.OUT)   # Set LedPin's mode is output
-#  GPIO.output(LedPin, GPIO.HIGH) # Set LedPin high(+3.3V) to turn on led
+  GPIO.setup(BeepPin, GPIO.OUT)   # Set BeepPin's mode is output
+#  GPIO.output(BeepPin, GPIO.HIGH) # Set BeepPin high(+3.3V) to turn on led
 
 def beep(mode):
-    GPIO.output(LedPin, GPIO.HIGH)  # led on
+    GPIO.output(BeepPin, GPIO.HIGH)  # led on
     time.sleep(0.1)
-    GPIO.output(LedPin, GPIO.LOW) # led off
+    GPIO.output(BeepPin, GPIO.LOW) # led off
     if (mode == WRONG):
         time.sleep(0.1)
-        GPIO.output(LedPin, GPIO.HIGH)  # led on
+        GPIO.output(BeepPin, GPIO.HIGH)  # led on
         time.sleep(0.1)
-        GPIO.output(LedPin, GPIO.LOW) # led off
+        GPIO.output(BeepPin, GPIO.LOW) # led off
 
 
 # Capture SIGINT for cleanup when the script is aborted
