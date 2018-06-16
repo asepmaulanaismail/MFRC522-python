@@ -3,8 +3,23 @@ import MFRC522
 import signal
 import requests
 import sys
+import RPi.GPIO as GPIO
+import time
 
 continue_reading = True
+LedPin = 7
+RIGHT_SLEEP=0.1
+WRONG_SLEEP=1
+
+def setup():
+  GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
+  GPIO.setup(LedPin, GPIO.OUT)   # Set LedPin's mode is output
+#  GPIO.output(LedPin, GPIO.HIGH) # Set LedPin high(+3.3V) to turn on led
+
+def beep(sleep):
+    GPIO.output(LedPin, GPIO.HIGH)  # led on
+    time.sleep(sleep)
+    GPIO.output(LedPin, GPIO.LOW) # led off
 
 # Capture SIGINT for cleanup when the script is aborted
 def end_read(signal,frame):
@@ -18,8 +33,10 @@ def save(uid):
         r = requests.post('http://' + sys.argv[1] + '/absensi/tap', json={"uid": uid})
         if (r.status_code == 200):
             print("SUCCESS")
+            beep(RIGHT_SLEEP)
         else:
             print("FAILED")
+            beep(WRONG_SLEEP)
         print(r.json()["message"])
     except requests.exceptions.RequestException as e:
         print(e)
@@ -34,6 +51,7 @@ MIFAREReader = MFRC522.MFRC522()
 print("Welcome to the MFRC522 data read example")
 print("Press Ctrl-C to stop.")
 
+setup()
 # This loop keeps checking for chips. If one is near it will get the UID and authenticate
 while continue_reading:
     
