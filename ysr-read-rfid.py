@@ -2,6 +2,7 @@ import RPi.GPIO as GPIO
 import MFRC522
 import signal
 import requests
+import sys
 
 continue_reading = True
 
@@ -14,7 +15,7 @@ def end_read(signal,frame):
     
 def save(uid):
     try:
-        r = requests.post('http://128.199.82.144:1506/absensi/tap', json={"uid": uid})
+        r = requests.post('http://' + sys.argv[1] + '/absensi/tap', json={"uid": uid})
         if (r.status_code == 200):
             print("SUCCESS")
         else:
