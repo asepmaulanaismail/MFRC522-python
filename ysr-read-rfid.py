@@ -49,7 +49,7 @@ while continue_reading:
     # If we have the UID, continue
     if status == MIFAREReader.MI_OK:
 
-        strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1))
+        strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
         # Print UID
         print ("Card read UID: " + strUid)
         save(strUid)
