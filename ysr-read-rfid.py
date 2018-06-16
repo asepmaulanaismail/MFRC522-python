@@ -15,6 +15,10 @@ def setup():
   GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
   GPIO.setup(BeepPin, GPIO.OUT)   # Set BeepPin's mode is output
 #  GPIO.output(BeepPin, GPIO.HIGH) # Set BeepPin high(+3.3V) to turn on led
+  GPIO.output(BeepPin, GPIO.HIGH)  # led on
+  time.sleep(1)
+  GPIO.output(BeepPin, GPIO.LOW) # led off
+
 
 def beep(mode):
     GPIO.output(BeepPin, GPIO.HIGH)  # led on
