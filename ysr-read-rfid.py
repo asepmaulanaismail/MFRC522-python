@@ -21,6 +21,7 @@ def beep(mode):
     time.sleep(0.1)
     GPIO.output(LedPin, GPIO.LOW) # led off
     if (mode == WRONG):
+        time.sleep(0.1)
         GPIO.output(LedPin, GPIO.HIGH)  # led on
         time.sleep(0.1)
         GPIO.output(LedPin, GPIO.LOW) # led off
