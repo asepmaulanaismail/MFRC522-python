@@ -179,5 +179,5 @@ while continue_reading:
 	else:
             setText(0, strUid)
             setText(1, u"Tidak Dikenal")
-	    beep(WRONG)
+            beep(WRONG)
 
