@@ -87,14 +87,14 @@ santri={
     "877221": "Hisap Mulya    "
 }
 
-def clearText():
-    lcd.cursor_pos = (0, 0)
+def clearText(line):
+    lcd.cursor_pos = (line, 0)
     lcd.write_string("                ")
-    lcd.cursor_pos = (1, 0)
-    lcd.write_string("                ")
+    #lcd.cursor_pos = (1, 0)
+    #lcd.write_string("                ")
 
 def setText(line, msg):
-    clearText()
+    clearText(line)
     lcd.cursor_pos = (line, 0)
     lcd.write_string(msg)
 
@@ -173,11 +173,11 @@ while continue_reading:
         strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
         # Print UID
         if strUid in santri.keys():
-            setText(0, "Error")
+            setText(0, santri[strUid])
             print ("Card read UID: " + strUid)
             save(strUid)
 	else:
-        setText(0, strUid)
-        setText(0, u"Tidak Dikenal")
+            setText(0, strUid)
+            setText(1, u"Tidak Dikenal")
 	    beep(WRONG)
 
