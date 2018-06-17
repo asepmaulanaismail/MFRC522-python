@@ -11,6 +11,7 @@ continue_reading = True
 BeepPin = 7
 RIGHT=1
 WRONG=0
+lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_rw=36, pin_e=35, pins_data=[33,31,29,32], numbering_mode=GPIO.BOARD)
 
 santri={
     "18163373": "Achmad Nurjamil",
@@ -93,7 +94,7 @@ def setup():
     GPIO.output(BeepPin, GPIO.HIGH)  # led on
     time.sleep(1)
     GPIO.output(BeepPin, GPIO.LOW) # led off
-    lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_rw=36, pin_e=35, pins_data=[33,31,29,32], numbering_mode=GPIO.BOARD)
+    # lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_rw=36, pin_e=35, pins_data=[33,31,29,32], numbering_mode=GPIO.BOARD)
     lcd.write_string(u'Siap')
 
 
@@ -128,7 +129,7 @@ def save(uid):
             lcd.write_string("Gagal")
             print("FAILED")
             beep(WRONG)
-        print(r.json()["message"])
+        print(r.json())
     except requests.exceptions.RequestException as e:
         lcd.cursor_pos = (1, 0)
         lcd.write_string("Error")
@@ -163,8 +164,15 @@ while continue_reading:
 
         strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
         # Print UID
-        lcd.cursor_pos = (0, 0)
-        lcd.write_string(santri[strUid])
-        print ("Card read UID: " + strUid)
-        save(strUid)
+        if strUid in santri.keys():
+	    lcd.cursor_pos = (0, 0)
+            lcd.write_string(santri[strUid])
+            print ("Card read UID: " + strUid)
+            save(strUid)
+	else:
+	   lcd.cursor_pos = (0, 0)
+	   lcd.write_string(strUid)
+	   lcd.cursor_pos = (1, 0)
+           lcd.write_string(u"Tidak Dikenal")
+	   beep(WRONG)
 
