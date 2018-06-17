@@ -49,7 +49,7 @@ def save(uid):
             beep(WRONG)
         print(r.json()["message"])
     except requests.exceptions.RequestException as e:
-        print(e)
+        print("ERROR")
 
 # Hook the SIGINT
 signal.signal(signal.SIGINT, end_read)
