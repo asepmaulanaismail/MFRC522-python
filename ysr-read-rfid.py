@@ -87,6 +87,17 @@ santri={
     "877221": "Hisap Mulya    "
 }
 
+def clearText():
+    lcd.cursor_pos = (0, 0)
+    lcd.write_string("                ")
+    lcd.cursor_pos = (1, 0)
+    lcd.write_string("                ")
+
+def setText(line, msg):
+    clearText()
+    lcd.cursor_pos = (line, 0)
+    lcd.write_string(msg)
+
 def setup():
     GPIO.setmode(GPIO.BOARD)       # Numbers GPIOs by physical location
     GPIO.setup(BeepPin, GPIO.OUT)   # Set BeepPin's mode is output
@@ -95,7 +106,7 @@ def setup():
     time.sleep(1)
     GPIO.output(BeepPin, GPIO.LOW) # led off
     # lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_rw=36, pin_e=35, pins_data=[33,31,29,32], numbering_mode=GPIO.BOARD)
-    lcd.write_string(u'Siap')
+    setText(0, u'Siap')
 
 
 def beep(mode):
@@ -120,19 +131,16 @@ def save(uid):
     try:
         r = requests.post('http://' + sys.argv[1] + '/absensi/tap', json={"uid": uid})
         if (r.status_code == 200):
-            lcd.cursor_pos = (1, 0)
-            lcd.write_string("Berhasil")
+            setText(1, "Berhasil")
             print("SUCCESS")
             beep(RIGHT)
         else:
-            lcd.cursor_pos = (1, 0)
-            lcd.write_string("Gagal")
+            setText(1, "Gagal")
             print("FAILED")
             beep(WRONG)
         print(r.json())
     except requests.exceptions.RequestException as e:
-        lcd.cursor_pos = (1, 0)
-        lcd.write_string("Error")
+        setText(1, "Error")
         print("ERROR")
 
 # Hook the SIGINT
@@ -165,14 +173,11 @@ while continue_reading:
         strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
         # Print UID
         if strUid in santri.keys():
-	    lcd.cursor_pos = (0, 0)
-            lcd.write_string(santri[strUid])
+            setText(0, "Error")
             print ("Card read UID: " + strUid)
             save(strUid)
 	else:
-	   lcd.cursor_pos = (0, 0)
-	   lcd.write_string(strUid)
-	   lcd.cursor_pos = (1, 0)
-           lcd.write_string(u"Tidak Dikenal")
-	   beep(WRONG)
+        setText(0, strUid)
+        setText(0, u"Tidak Dikenal")
+	    beep(WRONG)
 
