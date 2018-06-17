@@ -131,11 +131,11 @@ def save(uid):
     try:
         r = requests.post('http://' + sys.argv[1] + '/absensi/tap', json={"uid": uid})
         if (r.status_code == 200):
-            setText(1, "Berhasil")
+            setText(1, r.json()["message"])
             print("SUCCESS")
             beep(RIGHT)
         else:
-            setText(1, "Gagal")
+            setText(1, r.json()["message"])
             print("FAILED")
             beep(WRONG)
         print(r.json())
