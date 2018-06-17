@@ -5,7 +5,7 @@ import requests
 import sys
 import RPi.GPIO as GPIO
 import time
-from RPLCD.gpio import CharLCD
+#from RPLCD.gpio import CharLCD
 
 continue_reading = True
 BeepPin = 7
@@ -19,16 +19,16 @@ def setup():
     GPIO.output(BeepPin, GPIO.HIGH)  # led on
     time.sleep(1)
     GPIO.output(BeepPin, GPIO.LOW) # led off
-    lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_e=35, pins_data=[33,31,29,32], numbering_mode=GPIO.BOARD)
-    GPIO.setup(40, GPIO.OUT)
-    GPIO.output(40, GPIO.HIGH)
+    #lcd = CharLCD(cols=16, rows=2, pin_rs=37, pin_e=35, pins_data=[33,31,29,32], numbering_mode=GPIO.BOARD)
+    #GPIO.setup(40, GPIO.OUT)
+    #GPIO.output(40, GPIO.HIGH)
 
-    GPIO.setup(32, GPIO.OUT)
-    GPIO.output(32, GPIO.HIGH)
+    #GPIO.setup(32, GPIO.OUT)
+    #GPIO.output(32, GPIO.HIGH)
 
-    GPIO.setup(38, GPIO.OUT)
-    GPIO.output(38, GPIO.LOW)
-    lcd.write_string('Siap')
+    #GPIO.setup(38, GPIO.OUT)
+    #GPIO.output(38, GPIO.LOW)
+    #lcd.write_string('Siap')
 
 
 def beep(mode):
