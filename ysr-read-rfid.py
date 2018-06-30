@@ -172,10 +172,13 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
 
         strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
-        if strUid == "1928313921":
+        if strUid == "":
             setText(0, "Shutting down")
             setText(1, "Bye!")
+            beep(WRONG)
             time.sleep(2)
+            setText(0, "")
+            setText(1, "")
             call("sudo shutdown -h now", shell=True)
         else:
             # Print UID
@@ -183,8 +186,7 @@ while continue_reading:
                 setText(0, santri[strUid])
                 print ("Card read UID: " + strUid)
                 save(strUid)
-	    else:
+            else:
                 setText(0, strUid)
                 setText(1, u"Tidak Dikenal")
                 beep(WRONG)
-
