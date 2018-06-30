@@ -6,6 +6,7 @@ import sys
 import RPi.GPIO as GPIO
 import time
 from RPLCD.gpio import CharLCD
+from subprocess import call
 
 continue_reading = True
 BeepPin = 7
@@ -171,13 +172,19 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
 
         strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
-        # Print UID
-        if strUid in santri.keys():
-            setText(0, santri[strUid])
-            print ("Card read UID: " + strUid)
-            save(strUid)
-	else:
-            setText(0, strUid)
-            setText(1, u"Tidak Dikenal")
-            beep(WRONG)
+        if strUid == "1928313921":
+            setText(0, "Shutting down")
+            setText(1, "Bye!")
+            time.sleep(2)
+            call("sudo shutdown -h now", shell=True)
+        else:
+            # Print UID
+            if strUid in santri.keys():
+                setText(0, santri[strUid])
+                print ("Card read UID: " + strUid)
+                save(strUid)
+	    else:
+                setText(0, strUid)
+                setText(1, u"Tidak Dikenal")
+                beep(WRONG)
 
