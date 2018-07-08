@@ -172,7 +172,7 @@ while continue_reading:
     if status == MIFAREReader.MI_OK:
 
         strUid = ("".join(str(uid[x]) for x in range(0, len(uid)-1)))
-        if strUid == "":
+        if strUid == "1928313921":
             setText(0, "Shutting down")
             setText(1, "Bye!")
             beep(WRONG)
